@@ -32,9 +32,7 @@ The thought behind a document with this structure is to organize the data for RA
 Using the postgres ai extension and select the query as ollama_embed
 
 ```
-    cur.execute("""
-        SELECT ai.ollama_embed('nomic-embed-text', '%s');
-    """ % (query,))
+    cur.execute(f"SELECT ai.ollama_embed('nomic-embed-text', %s);",(query,))
     query_embedding = cur.fetchone()[0]
 
     # Retrieve relevant documents based on cosine distance

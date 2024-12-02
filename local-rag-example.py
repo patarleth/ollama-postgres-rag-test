@@ -124,9 +124,7 @@ def sample_ollama_embed(conn, query) -> str:
     with conn:
         with conn.cursor() as cur:
             # Embed the query using the ollama_embed function
-            cur.execute("""
-                SELECT ai.ollama_embed('nomic-embed-text', '%s');
-            """ % (query))
+            cur.execute(f"SELECT ai.ollama_embed('nomic-embed-text', %s);", (query,))
             query_embedding = cur.fetchone()[0]
 
             # Retrieve relevant documents based on cosine distance
