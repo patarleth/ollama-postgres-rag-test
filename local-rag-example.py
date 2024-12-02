@@ -86,7 +86,7 @@ def init_db_table_data(conn):
                         id SERIAL PRIMARY KEY,
                         title TEXT,
                         content TEXT,
-                        embedding VECTOR(3072)
+                        embedding VECTOR(768)
                     );
                 """)
         with conn.cursor() as cur:
@@ -102,7 +102,7 @@ def init_db_table_data(conn):
                             VALUES (
                                 %(title)s,
                                 %(content)s,
-                                ai.ollama_embed('llama3.2', concat(%(title)s, ' - ', %(content)s))
+                                ai.ollama_embed('nomic-embed-text', concat(%(title)s, ' - ', %(content)s))
                             )
                         """, doc)
                 # finally run a query
@@ -113,8 +113,9 @@ def init_db_table_data(conn):
                     """)
 
                     rows = cur.fetchall()
-                    for row in rows:
-                        print(f"Title: {row[0]}, Content: {row[1]}, Embedding Dimensions: {row[2]}")
+                    print(f"number of docs inserted {len(rows)}")
+                    # for row in rows:
+                    #     print(f"Title: {row[0]}, Content: {row[1]}, Embedding Dimensions: {row[2]}")
 
 def sample_ollama_embed(conn, query) -> str:
     context=''
@@ -122,7 +123,7 @@ def sample_ollama_embed(conn, query) -> str:
         with conn.cursor() as cur:
             # Embed the query using the ollama_embed function
             cur.execute("""
-                SELECT ai.ollama_embed('llama3.2', '%s');
+                SELECT ai.ollama_embed('nomic-embed-text', '%s');
             """ % (query))
             query_embedding = cur.fetchone()[0]
 
@@ -131,7 +132,7 @@ def sample_ollama_embed(conn, query) -> str:
                 SELECT title, content, 1 - (embedding <=> '%s') AS similarity
                 FROM documents
                 ORDER BY similarity DESC
-                LIMIT 3;
+                LIMIT 12;
             """ % query_embedding)
 
             rows = cur.fetchall()
