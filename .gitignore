@@ -3,3 +3,4 @@ test.py
 node_modules/*
 __*__
 package-lock.json
+config
