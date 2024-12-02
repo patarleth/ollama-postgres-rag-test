@@ -132,7 +132,7 @@ def sample_ollama_embed(conn, query) -> str:
                 SELECT title, content, 1 - (embedding <=> '%s') AS similarity
                 FROM documents
                 ORDER BY similarity DESC
-                LIMIT 12;
+                LIMIT 120;
             """ % query_embedding)
 
             rows = cur.fetchall()
