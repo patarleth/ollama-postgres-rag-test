@@ -141,8 +141,18 @@ def sample_ollama_generate(conn, context, query):
     print(f"query: {query}\n")
 
     with conn.cursor() as cur:
-        genStr = f"DOCUMENT:\n{context}\n\nQUESTION:\n{query}\n\nINSTRUCTIONS:\n"
-        genStr = genStr + "Answer the users QUESTION using the DOCUMENT text above.\nKeep your answer ground in the facts of the DOCUMENT.\nIf the DOCUMENT doesn’t contain the facts to answer the QUESTION then please say so."
+        genStr = """DOCUMENT:
+{0}
+
+QUESTION:
+{1}
+
+INSTRUCTIONS:
+Answer the users QUESTION using the DOCUMENT text above.
+Keep your answer ground in the facts of the DOCUMENT.
+If the DOCUMENT doesn’t contain the facts to answer the QUESTION then please say so.
+""".format(context, query)
+        print(genStr)
 
         cur.execute("SELECT ai.ollama_generate('llama3.2', (%s))",
                     (genStr, ))
@@ -152,7 +162,6 @@ def sample_ollama_generate(conn, context, query):
 
 # query = "Tell me about gates in South Korea."
 query = "What West Hartford CT meetings were scheduled for November 2024 in the morning?"
-
 ollama_host = 'http://host.docker.internal:11434'
 
 conn = connect_db(ollama_host)
