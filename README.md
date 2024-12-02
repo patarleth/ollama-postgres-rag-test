@@ -18,7 +18,7 @@ https://docs.chainlit.io/get-started/overview
 
 ## RAG data
 
-Group WEHA town council meetings by month year. Data sourced from ical docs https://www.westhartfordct.gov/government-services/meetings-agendas
+Grouped the WEHA town council meetings by month and year. Data sourced from ical docs https://www.westhartfordct.gov/government-services/meetings-agendas
 
 The 3 generated (morning) meeting strings for the doc titled "November 2024 Meetings in West Hartford"
 ...
