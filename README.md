@@ -21,17 +21,10 @@ https://docs.chainlit.io/get-started/overview
 Grouped the WEHA town council meetings by month and year. Data sourced from ical docs https://www.westhartfordct.gov/government-services/meetings-agendas
 
 The 3 generated (morning) meeting strings for the doc titled "November 2024 Meetings in West Hartford"
-...
 ```
-    On Thursday November 14 2024 at 8:00 AM, the town of West Hartford in CT is holding a meeting for the Board of Assessors, held at Town Hall - Room 142.
-```
-...
-```
-    On Monday November 18 2024 at 7:45 AM, the town of West Hartford in CT is holding a meeting for the Pension Board, held at Town Hall, Room 407.
-```
-...
-```
-    On Tuesday November 19 2024 at 10:00 AM, the town of West Hartford in CT is holding a meeting for the Senior Citizens Advisory Commission, held at Bishop's Corner Senior Center, 15 Starkel Rd.
+Thursday November 14 2024 at 8:00 AM, the town of West Hartford in CT is holding a meeting for the Board of Assessors, held at Town Hall - Room 142.
+Monday November 18 2024 at 7:45 AM, the town of West Hartford in CT is holding a meeting for the Pension Board, held at Town Hall, Room 407.
+Tuesday November 19 2024 at 10:00 AM, the town of West Hartford in CT is holding a meeting for the Senior Citizens Advisory Commission, held at Bishop's Corner Senior Center, 15 Starkel Rd.
 ```
 
 The thought behind a document with this structure is to organize the data for RAG grouped with 'similar' meetings into a individual docs for the vector store.
@@ -45,12 +38,7 @@ Using the postgres ai extension and select the query as ollama_embed
     query_embedding = cur.fetchone()[0]
 
     # Retrieve relevant documents based on cosine distance
-    cur.execute("""
-        SELECT title, content, 1 - (embedding <=> '%s') AS similarity
-        FROM documents
-        ORDER BY similarity DESC
-        LIMIT 3;
-    """ % query_embedding)
+    cur.execute(f"SELECT title, content FROM documents ORDER BY embedding <=> %s LIMIT 30", (query_embedding,))
 ```
 
 I modeled the actual RAG query after this dudes - 

@@ -1,4 +1,6 @@
 import psycopg2
+import pgvector 
+from pgvector.psycopg2 import register_vector
 
 # the knowledge base
 dummy_data_korea = [
@@ -128,12 +130,7 @@ def sample_ollama_embed(conn, query) -> str:
             query_embedding = cur.fetchone()[0]
 
             # Retrieve relevant documents based on cosine distance
-            cur.execute("""
-                SELECT title, content, 1 - (embedding <=> '%s') AS similarity
-                FROM documents
-                ORDER BY similarity DESC
-                LIMIT 120;
-            """ % query_embedding)
+            cur.execute(f"SELECT title, content FROM documents ORDER BY embedding <=> %s LIMIT 30", (query_embedding,))
 
             rows = cur.fetchall()
                 
@@ -156,11 +153,14 @@ def sample_ollama_generate(conn, context, query):
         print(model_response['response'])
 
 # query = "Tell me about gates in South Korea."
-query = "What West Hartford CT meetings scheduled in November 2024 that were in the morning?"
+query = "What West Hartford CT meetings were scheduled for November 2024 in the morning?"
 
 ollama_host = 'http://host.docker.internal:11434'
 
 conn = connect_db(ollama_host)
+
+# Register the vector type with psycopg2
+register_vector(conn)
 
 try:
     init_db_table_data(conn)
