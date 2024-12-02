@@ -16,6 +16,25 @@ https://github.com/ollama/ollama-python
 https://docs.chainlit.io/get-started/overview
 
 
+## my python script expects to be run from a docker container
+
+If you want to run on the host directly edit 
+
+[local-rag-example.py](local-rag-example.py)
+
+First for postgres, edit about line 71
+```
+    host = 'host.docker.internal',
+```
+
+then for ollama, change (about) line 165
+
+```
+    ollama_host = 'http://host.docker.internal:11434'
+```
+
+To localhost
+
 ## RAG data
 
 Grouped the WEHA town council meetings by month and year. Data sourced from ical docs https://www.westhartfordct.gov/government-services/meetings-agendas
