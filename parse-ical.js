@@ -32,10 +32,10 @@ for (const event of events) {
     const startDate = start ? start.toJSDate() : null
     const endDate = end ? end.toJSDate() : startDate
 
-    const formattedDate = dateFormatter.format(startDate);
+    const formattedDate = dateFormatter.format(startDate).replaceAll(',','');
     const formattedTime = timeFormatter.format(startDate);
 
-    const meetingMsg = `On ${formattedDate} at ${formattedTime} the town of West Hartford in CT is holding a meeting for the ${summary}, held at ${location}${description}.`
+    const meetingMsg = `On ${formattedDate} at ${formattedTime}, the town of West Hartford in CT is holding a meeting for the ${summary}, held at ${location}${description}.`
 
 
     const monthName = startDate.toLocaleString('default', { month: 'long' });
