@@ -9,7 +9,12 @@ https://github.com/ollama/ollama-python
     then run with
     .venv/bin/python ollama_test.py
 
----
+then 
+
+```
+pip isntall psycopg2
+pip install pgvector
+```
 
 ## chainlit full python lib to build chat bots
 
@@ -48,7 +53,7 @@ Tuesday November 19 2024 at 10:00 AM, the town of West Hartford in CT is holding
 
 The thought behind a document with this structure is to organize the data for RAG grouped with 'similar' meetings into a individual docs for the vector store.
 
-Using the postgres ai extension and select the query as ollama_embed
+Using the postgres pgai extension and select the query as ollama_embed
 
 ```
     cur.execute(f"SELECT ai.ollama_embed('nomic-embed-text', %s);",(query,))

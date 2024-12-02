@@ -1,5 +1,4 @@
 import psycopg2
-import pgvector 
 from pgvector.psycopg2 import register_vector
 
 # the knowledge base
@@ -109,10 +108,7 @@ def init_db_table_data(conn):
                         """, doc)
                 # finally run a query
                 with conn.cursor() as cur:                
-                    cur.execute("""
-                        SELECT title, content, vector_dims(embedding) 
-                        FROM documents;
-                    """)
+                    cur.execute("SELECT title, content, vector_dims(embedding) FROM documents;")
 
                     rows = cur.fetchall()
                     print(f"number of docs inserted {len(rows)}")
